@@ -26,7 +26,7 @@ function AddTodoForm({ onAddTodo }) {
         value={todoTitle}
         onChange={handleTitleChange}
       />
-      <button>Add</button>
+      <button disabled={todoTitle === ""}>Add</button>
     </form>
   );
 }
