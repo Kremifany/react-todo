@@ -1,19 +1,12 @@
 import React from "react";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./ToDoList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const useSemiPersistantState = () => {
-  const [todoList, setTodoList] = React.useState(
-    JSON.parse(localStorage.getItem("savedTodoList") || "[]", [])
-  );
-  useEffect(() => {
-    localStorage.setItem("savedTodoList", JSON.stringify(todoList));
-    console.log(`inside app.js use effect`);
-  }, [todoList]);
-
-  return [todoList, setTodoList];
-};
+// const useSemiPersistantState = () => {
+//   const [todoList, setTodoList] = React.useState(
+//     JSON.parse(localStorage.getItem("savedTodoList") || "[]", [])
+//   );
 
 function App() {
   const addTodo = (newTodo) => {
@@ -21,7 +14,36 @@ function App() {
     setTodoList([...todoList, newTodo]);
   };
 
-  const [todoList, setTodoList] = useSemiPersistantState();
+  const [todoList, setTodoList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(true);
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve({
+          data: {
+            todoList: JSON.parse(
+              localStorage.getItem("savedTodoList") || "[]",
+              []
+            ),
+          },
+        });
+      }, 2000);
+    })
+      .then((result) => {
+        setTodoList(result.data.todoList);
+        setIsLoading(false);
+      })
+      .catch(() => setIsError(true));
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading) {
+      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+    }
+  }, [todoList, isLoading]);
 
   const removeTodo = (id) => {
     const newToDoList = todoList.filter((listItem) => listItem.id !== id);
@@ -33,7 +55,12 @@ function App() {
     <>
       <h1>Todo List</h1>
       <AddTodoForm onAddTodo={addTodo} />
-      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      {isError && <p>Something went wrong ...</p>}
+      {isLoading ? (
+        <p>Loading ...</p>
+      ) : (
+        <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
+      )}
     </>
   );
 }
