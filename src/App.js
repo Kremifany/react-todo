@@ -3,59 +3,124 @@ import AddTodoForm from "./AddTodoForm";
 import TodoList from "./ToDoList";
 import { useEffect, useState } from "react";
 
-// const useSemiPersistantState = () => {
-//   const [todoList, setTodoList] = React.useState(
-//     JSON.parse(localStorage.getItem("savedTodoList") || "[]", [])
-//   );
-
 function App() {
-  const addTodo = (newTodo) => {
-    console.log("inside addTodo");
+  const postTodo = async (todo) => {
+    try {
+      const airtableData = {
+        records: [
+          {
+            fields: {
+              title: todo,
+            },
+          },
+        ],
+      };
+
+      const response = await fetch(
+        `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+          },
+          body: JSON.stringify(airtableData),
+        }
+      );
+
+      if (!response.ok) {
+        const message = `Error has ocurred:
+                             ${response.status}`;
+        throw new Error(message);
+      }
+
+      const dataResponse = await response.json();
+      return dataResponse;
+    } catch (error) {
+      console.log(error.message);
+      return null;
+    }
+  };
+
+  const addTodo = async (newTodo) => {
+    const response = await postTodo(newTodo.title);
+    newTodo.id = response.records[0].id;
     setTodoList([...todoList, newTodo]);
   };
 
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+
+  async function fetchData() {
+    const options = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+    };
+
+    const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const message = `Error: ${response.status}`;
+        throw new Error(message);
+      }
+      const data = await response.json();
+      console.log(data);
+
+      const todos = data.records.map((todo) => {
+        const newTodo = {
+          id: todo.id,
+          title: todo.fields.title,
+        };
+        return newTodo;
+      });
+      setTodoList(todos);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   useEffect(() => {
     setIsLoading(true);
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({
-          data: {
-            todoList: JSON.parse(
-              localStorage.getItem("savedTodoList") || "[]",
-              []
-            ),
-          },
-        });
-      }, 2000);
-    })
-      .then((result) => {
-        setTodoList(result.data.todoList);
-        setIsLoading(false);
-      })
-      .catch(() => setIsError(true));
+    fetchData();
+    setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem("savedTodoList", JSON.stringify(todoList));
+  async function removeData(id) {
+    const options = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+      },
+    };
+
+    const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}/${id}`;
+
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const message = `Error: ${response.status}`;
+        throw new Error(message);
+      }
+      const data = await response.json();
+      console.log(data);
+      fetchData();
+    } catch (error) {
+      console.log(error.message);
     }
-  }, [todoList, isLoading]);
+  }
 
   const removeTodo = (id) => {
-    const newToDoList = todoList.filter((listItem) => listItem.id !== id);
-    setTodoList(newToDoList);
-    console.log(`inside removeTodo with id = ${id}`);
+    removeData(id);
   };
 
   return (
     <>
       <h1>Todo List</h1>
       <AddTodoForm onAddTodo={addTodo} />
-      {isError && <p>Something went wrong ...</p>}
       {isLoading ? (
         <p>Loading ...</p>
       ) : (
