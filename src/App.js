@@ -2,8 +2,12 @@ import React from "react";
 import AddTodoForm from "./AddTodoForm";
 import TodoList from "./ToDoList";
 import { useEffect, useState } from "react";
+//import { BrowserRouter , Routes, Route } from "react-router-dom";
 
 function App() {
+  const [todoList, setTodoList] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const postTodo = async (todo) => {
     try {
       const airtableData = {
@@ -44,12 +48,13 @@ function App() {
 
   const addTodo = async (newTodo) => {
     const response = await postTodo(newTodo.title);
+    if (!response) {
+      alert("error occured during adding new Item to Database");
+      return;
+    }
     newTodo.id = response.records[0].id;
     setTodoList([...todoList, newTodo]);
   };
-
-  const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   async function fetchData() {
     const options = {
@@ -68,7 +73,6 @@ function App() {
         throw new Error(message);
       }
       const data = await response.json();
-      console.log(data);
 
       const todos = data.records.map((todo) => {
         const newTodo = {
@@ -89,7 +93,7 @@ function App() {
     setIsLoading(false);
   }, []);
 
-  async function removeData(id) {
+  async function removeTodo(id) {
     const options = {
       method: "DELETE",
       headers: {
@@ -112,10 +116,6 @@ function App() {
       console.log(error.message);
     }
   }
-
-  const removeTodo = (id) => {
-    removeData(id);
-  };
 
   return (
     <>

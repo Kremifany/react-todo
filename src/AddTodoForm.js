@@ -14,7 +14,6 @@ function AddTodoForm({ onAddTodo }) {
 
   const handleAddTodo = (event) => {
     event.preventDefault();
-    console.log("HandleAddTodo hit");
     onAddTodo({ title: todoTitle });
     setTodoTitle("");
   };
