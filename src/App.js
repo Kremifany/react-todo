@@ -126,7 +126,7 @@ function App() {
           element={
             <>
               <body className={style.body}>
-                <h1>Todo List</h1>
+                <h1 className={style.header}>Todo List</h1>
                 <AddTodoForm onAddTodo={addTodo} />
                 {isLoading ? (
                   <p>Loading ...</p>

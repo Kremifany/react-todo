@@ -1,23 +1,23 @@
 import { useEffect, useRef } from "react";
+import style from "./InputWithLabel.module.css";
 
 const InputWithLabel = ({ id, name, value, isFocused, onChange, children }) => {
   const inputRef = useRef();
-  // C
   useEffect(() => {
     if (isFocused && inputRef.current) {
-      // D
       inputRef.current.focus();
-    }
-  }); //no dependency array means autofocus ech rendering of the component
+    } 
+  }); 
   return (
     <>
       <label htmlFor={id}>{children}</label>
-      <input
+      <input className={style.input}
         ref={inputRef}
         id={id}
         name={name}
         value={value}
         onChange={onChange}
+        placeholder="enter task "
       />
     </>
   );

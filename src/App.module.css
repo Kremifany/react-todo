@@ -1,7 +1,12 @@
 .body {
+    padding:15px;
     background-color: aqua;
     font-family: 'Poppins', sans-serif;
+    border:5px;
+
 }
-h1 {
-    font-size: 5rem;
+.header {
+    padding: 3px;
+    margin: 2px;
+    font-size: 3rem;
 }
