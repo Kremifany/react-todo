@@ -1,12 +1,22 @@
-.body {
+body {
     padding:15px;
     background-color: aqua;
     font-family: 'Poppins', sans-serif;
-    border:5px;
-
+    border:0px;
+    margin: 0;
 }
 .header {
+    size:3em;
     padding: 3px;
     margin: 2px;
-    font-size: 3rem;
+}
+.nav-item.current {
+    background-color: #cdcdcd;
+}
+
+.nav-item {
+    display: none;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
 }
