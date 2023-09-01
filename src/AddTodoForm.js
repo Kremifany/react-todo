@@ -1,5 +1,8 @@
 import React from "react";
 import InputWithLabel from "./InputWithLabel";
+import style from "./AddTodoForm.module.css";
+
+import { useNavigate } from "react-router-dom";
 
 function AddTodoForm({ onAddTodo }) {
   const [todoTitle, setTodoTitle] = React.useState("");
@@ -12,25 +15,31 @@ function AddTodoForm({ onAddTodo }) {
     setTodoTitle(newTodoTitle);
   };
 
+  const navigate = useNavigate();
   const handleAddTodo = (event) => {
     event.preventDefault();
     onAddTodo({ title: todoTitle });
     setTodoTitle("");
+    navigate("/list", { replace: true });
   };
 
   return (
-    <form onSubmit={handleAddTodo}>
+    <form className={style.InputForm} onSubmit={handleAddTodo}>
       <InputWithLabel
+        className={style.InputWithLabel}
         id="todoTitle"
         name="title"
         value={todoTitle}
         isFocused
         onChange={handleTitleChange}
+        placeholder="Enter task"
       >
         <strong>Title:</strong>
       </InputWithLabel>
 
-      <button disabled={todoTitle === ""}>Add</button>
+      <button className={style.addButton} disabled={todoTitle === ""}>
+        Add
+      </button>
     </form>
   );
 }
