@@ -1,6 +1,7 @@
 import React from "react";
 import InputWithLabel from "./InputWithLabel";
 import style from "./AddTodoForm.module.css";
+import PropTypes from "prop-types";
 
 import { useNavigate } from "react-router-dom";
 
@@ -43,4 +44,5 @@ function AddTodoForm({ onAddTodo }) {
     </form>
   );
 }
+AddTodoForm.propTypes = { onAddTodo: PropTypes.func };
 export default AddTodoForm;
