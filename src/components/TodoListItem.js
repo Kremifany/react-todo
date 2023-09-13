@@ -17,7 +17,10 @@ function TodoListItem({ todo, onRemoveTodo }) {
     </li>
   );
 }
+
 TodoListItem.propTypes = {
-  todo: PropTypes.shape({ id: PropTypes.string, title: PropTypes.string }),
+  todo: PropTypes.object,
+  onRemoveTodo: PropTypes.func,
 };
+
 export default TodoListItem;

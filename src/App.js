@@ -1,15 +1,17 @@
 import React from "react";
 import AddTodoForm from "./components/AddTodoForm";
-import TodoList from "./components/ToDoList";
+//import TodoList from "./components/ToDoList";
 import Main from "./components/Main";
 import Nav from "./components/Nav";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import style from "./App.module.css";
+//import style from "./App.module.css";
+import List from "./routes/List";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  //const [isLoading, setIsLoading] = useState(true);
+  // const [sortBy, setSortBy] = useState('title');
 
   const postTodo = async (todo) => {
     try {
@@ -57,6 +59,7 @@ function App() {
     }
     newTodo.id = response.records[0].id;
     setTodoList([...todoList, newTodo]);
+    fetchData();
   };
 
   async function fetchData() {
@@ -68,7 +71,8 @@ function App() {
     };
 
     const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
-
+    //?view=Grid%20view&sort[0][field]=title&sort[0][direction]=desc
+    console.log(url);
     try {
       const response = await fetch(url, options);
       if (!response.ok) {
@@ -84,16 +88,16 @@ function App() {
         };
         return newTodo;
       });
+
       setTodoList(todos);
+      //setIsLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   }
 
   useEffect(() => {
-    setIsLoading(true);
     fetchData();
-    setIsLoading(false);
   }, []);
 
   async function removeTodo(id) {
@@ -120,6 +124,18 @@ function App() {
     }
   }
 
+  // const App = () => {
+  //   // ... app logic here
+  //   return (
+  //     <BrowserRouter>
+  //       <Routes>
+  //         <Route path="/" element={<TodoContainer />}></Route>
+  //         <Route path="/new" element={<AddTodo />}></Route>
+  //       </Routes>
+  //     </BrowserRouter>
+  //   );
+  // };
+  console.log("before the routes");
   return (
     <>
       <h1>Todo App</h1>
@@ -139,16 +155,7 @@ function App() {
           <Route
             path="/list"
             element={
-              <>
-                <Nav route={"/list"} />
-                <h2 className={style.header}>Todo List</h2>
-
-                {isLoading ? (
-                  <p>Loading ...</p>
-                ) : (
-                  <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-                )}
-              </>
+              <List todoList={todoList} onRemoveTodo={removeTodo}></List>
             }
           ></Route>
         </Routes>
