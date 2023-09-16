@@ -139,14 +139,14 @@ function App() {
   return (
     <>
       <h1>Todo App</h1>
+
       <BrowserRouter>
+        <Nav />
         <Routes>
-          <Route path="/" element={<Main />}></Route>
           <Route
             path="/add"
             element={
               <>
-                <Nav route={"/add"} />
                 <h2>Add New Todo</h2>
                 <AddTodoForm onAddTodo={addTodo} />
               </>

@@ -1,4 +1,4 @@
-import Nav from "../components/Nav.js";
+
 import TodoList from "../components/ToDoList.js";
 import { useState } from "react";
 import style from "./List.module.css";
@@ -17,8 +17,7 @@ function List({ todoList, onRemoveTodo }) {
   });
   return (
     <>
-      <Nav route={"/list"} />
-      <h2>Todo List</h2>
+    <h2>Todo List</h2>
       <TodoList
         todoList={todoList}
         onRemoveTodo={onRemoveTodo}

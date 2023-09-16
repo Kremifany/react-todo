@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import style from "./TodoList.module.css";
 
 function TodoList({ todoList, onRemoveTodo, handleSortItems, sortAscending }) {
-  console.log(sortAscending);
+  console.log({ sortAscending });
   return (
     <>
       {sortAscending ? (
@@ -13,7 +13,7 @@ function TodoList({ todoList, onRemoveTodo, handleSortItems, sortAscending }) {
             className={style.button}
             onClick={() => handleSortItems(false)}
           >
-            A to Z
+            Z to A
           </button>
         </div>
       ) : (
@@ -22,7 +22,7 @@ function TodoList({ todoList, onRemoveTodo, handleSortItems, sortAscending }) {
             className={style.button}
             onClick={() => handleSortItems(true)}
           >
-            Z to A
+            A to Z
           </button>
         </div>
       )}
