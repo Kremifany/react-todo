@@ -1,6 +1,6 @@
 import React from "react";
 import InputWithLabel from "./InputWithLabel";
-import style from "./AddTodoForm.module.css";
+import styles from "./AddTodoForm.module.css";
 import PropTypes from "prop-types";
 
 import { useNavigate } from "react-router-dom";
@@ -25,9 +25,9 @@ function AddTodoForm({ onAddTodo }) {
   };
 
   return (
-    <form className={style.InputForm} onSubmit={handleAddTodo}>
+    <form className={styles.InputForm} onSubmit={handleAddTodo}>
       <InputWithLabel
-        className={style.InputWithLabel}
+        className={styles.InputWithLabel}
         id="todoTitle"
         name="title"
         value={todoTitle}
@@ -38,7 +38,7 @@ function AddTodoForm({ onAddTodo }) {
         <strong>Title:</strong>
       </InputWithLabel>
 
-      <button className={style.addButton} disabled={todoTitle === ""}>
+      <button className={styles.addButton} disabled={todoTitle === ""}>
         Add
       </button>
     </form>

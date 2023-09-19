@@ -20,3 +20,39 @@ body {
     border: 1px solid #ccc;
     border-radius: 0 0 5px 5px;
 }
+.list {
+    list-style: none;
+    display: grid;
+    margin: 1em;
+    padding: 2px;
+}
+
+.button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #1d1d9c;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+.button:hover {
+    background-color: #5151ea
+}
+
+.button:active {
+    background-color: #5151ea;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+.button-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

@@ -1,11 +1,9 @@
 import React from "react";
 import AddTodoForm from "./components/AddTodoForm";
-//import TodoList from "./components/ToDoList";
-import Main from "./components/Main";
 import Nav from "./components/Nav";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import style from "./App.module.css";
+//import styles from "./App.module.css";
 import List from "./routes/List";
 
 function App() {
@@ -71,7 +69,7 @@ function App() {
     };
 
     const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
-    //?view=Grid%20view&sort[0][field]=title&sort[0][direction]=desc
+    //?view=Grid%20view&sort[0][field]=title&sort[0][direction]=desc//sorting with url implemented here
     console.log(url);
     try {
       const response = await fetch(url, options);
@@ -85,6 +83,7 @@ function App() {
         const newTodo = {
           id: todo.id,
           title: todo.fields.title,
+          createdTime: todo.createdTime,
         };
         return newTodo;
       });

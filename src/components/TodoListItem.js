@@ -1,14 +1,14 @@
 import React from "react";
-import style from "./TodoListItem.module.css";
+import styles from "./TodoListItem.module.css";
 import PropTypes from "prop-types";
 
 import remove from "./assets/icons8-trash-24.png";
 function TodoListItem({ todo, onRemoveTodo }) {
   return (
-    <li className={style.ListItem}>
+    <li className={styles.ListItem}>
       {todo.title}
       <button
-        className={style.removeButton}
+        className={styles.removeButton}
         onClick={() => onRemoveTodo(todo.id)}
       >
         Remove
@@ -19,7 +19,11 @@ function TodoListItem({ todo, onRemoveTodo }) {
 }
 
 TodoListItem.propTypes = {
-  todo: PropTypes.object,
+  todo: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    createdTime: PropTypes.string.isRequired,
+  }),
   onRemoveTodo: PropTypes.func,
 };
 

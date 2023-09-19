@@ -1,37 +1,36 @@
-import style from "./Nav.module.css";
+import styles from "./Nav.module.css";
 import add from "./assets/icons8-add-24.png";
 import viewList from "./assets/icons8-open-book-24.png";
-
-//import ReactDOM from "react-dom/client"
 import { useLocation } from "react-router-dom";
+import {Link } from "react-router-dom";
 const Nav = () => {
   const location = useLocation();
   console.log("path", location.pathname);
   const getClassName = (tab) => {
     if (location.pathname === tab) {
-      return style.current;
+      return styles.current;
     } else {
-      return style.background;
+      return styles.background;
     }
   };
 
-  console.log("Printing style");
-  console.log(style);
+  console.log("Printing styles in nav");
+  console.log(styles);
   return (
     <>
       <nav>
-        <ul className={style.links}>
+        <ul className={styles.links}>
           <li className={getClassName("/list")}>
-            <a href="/list" className={style.navlink}>
+            <Link to="/list" className={styles.navlink}>
               <img src={viewList} alt="viewList" />
               <span>View List</span>
-            </a>
+            </Link>
           </li>
           <li className={getClassName("/add")}>
-            <a href="/add" className={style.navlink}>
+            <Link to="/add" className={styles.navlink}>
               <img src={add} alt="add" />
               <span>Add Todo</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import style from "./InputWithLabel.module.css";
+import styles from "./InputWithLabel.module.css";
 import PropTypes from "prop-types";
 
 const InputWithLabel = ({ id, name, value, isFocused, onChange, children }) => {
@@ -12,7 +12,7 @@ const InputWithLabel = ({ id, name, value, isFocused, onChange, children }) => {
   return (
     <>
       <label htmlFor={id}>{children}</label>
-      <input className={style.input}
+      <input className={styles.input}
         ref={inputRef}
         id={id}
         name={name}
