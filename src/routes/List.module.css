@@ -10,16 +10,7 @@ body {
     padding: 3px;
     margin: 2px;
 }
-.nav-item.current {
-    background-color: #cdcdcd;
-}
 
-.nav-item {
-    display: none;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 0 0 5px 5px;
-}
 .list {
     list-style: none;
     display: grid;
@@ -51,8 +42,8 @@ body {
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
-.button-row{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+
+.divb{
+    padding-bottom: 15px;
+
 }

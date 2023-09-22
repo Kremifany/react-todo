@@ -8,7 +8,7 @@ import List from "./routes/List";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
-  //const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   // const [sortBy, setSortBy] = useState('title');
 
   const postTodo = async (todo) => {
@@ -52,7 +52,7 @@ function App() {
   const addTodo = async (newTodo) => {
     const response = await postTodo(newTodo.title);
     if (!response) {
-      alert("error occured during adding new Item to Database");
+      alert("error occured during adding new Item");
       return;
     }
     newTodo.id = response.records[0].id;
@@ -89,14 +89,16 @@ function App() {
       });
 
       setTodoList(todos);
-      //setIsLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error.message);
     }
   }
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData();
+    setIsLoading(false);
   }, []);
 
   async function removeTodo(id) {
@@ -123,17 +125,6 @@ function App() {
     }
   }
 
-  // const App = () => {
-  //   // ... app logic here
-  //   return (
-  //     <BrowserRouter>
-  //       <Routes>
-  //         <Route path="/" element={<TodoContainer />}></Route>
-  //         <Route path="/new" element={<AddTodo />}></Route>
-  //       </Routes>
-  //     </BrowserRouter>
-  //   );
-  // };
   console.log("before the routes");
   return (
     <>
@@ -142,6 +133,7 @@ function App() {
       <BrowserRouter>
         <Nav />
         <Routes>
+          <Route path="/" element={<div></div>}></Route>
           <Route
             path="/add"
             element={
@@ -154,7 +146,11 @@ function App() {
           <Route
             path="/list"
             element={
-              <List todoList={todoList} onRemoveTodo={removeTodo}></List>
+              isLoading ? (
+                <p>Loading ...</p>
+              ) : (
+                <List todoList={todoList} onRemoveTodo={removeTodo}></List>
+              )
             }
           ></Route>
         </Routes>

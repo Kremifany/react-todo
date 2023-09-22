@@ -12,76 +12,55 @@ function List({ todoList, onRemoveTodo }) {
 
   const handleSortItems = (sortAscending, currentSortBy) => {
     console.log("inside handleSortItems");
-    if (currentSortBy === "createdTime") {
-      setCurrentSortBy("createdTime");
-      setCreatedTimeSortAscending(sortAscending);
-    } else {
-      setCurrentSortBy("title");
-      setTitleSortAscending(sortAscending);
+    switch (currentSortBy) {
+      case "createdTime": {
+        setCurrentSortBy("createdTime");
+        setCreatedTimeSortAscending(sortAscending);
+        break;
+      }
+      case "title": {
+        setCurrentSortBy("title");
+        setTitleSortAscending(sortAscending);
+        break;
+      }
+      default:
+        return;
     }
   };
 
   if (currentSortBy === "createdTime") {
     todoList.sort((a, b) => {
       if (createdTimeSortAscending)
-        return a.createdTime < b.createdTime
-          ? 1
-          : a.createdTime > b.createdTime
-          ? -1
-          : 0;
-      else
-        return a.createdTime < b.createdTime
-          ? -1
-          : a.createdTime > b.createdTime
-          ? 1
-          : 0;
+        return a.createdTime <= b.createdTime ? 1 : -1;
+      else return a.createdTime < b.createdTime ? -1 : 1;
     });
   } else {
     todoList.sort((a, b) => {
-      if (titleSortAscending)
-        return a.title < b.title ? 1 : a.title > b.title ? -1 : 0;
-      else return a.title < b.title ? -1 : a.title > b.title ? 1 : 0;
+      if (titleSortAscending) return a.title <= b.title ? 1 : -1;
+      else return a.title < b.title ? -1 : 1;
     });
   }
   return (
     <>
-      <h2>Todo List</h2>
+      <h1>Todo List</h1>
       <h3>Sort By</h3>
-
-      <div>
-        {createdTimeSortAscending ? (
-          <button
-            className={styles.button}
-            onClick={() => handleSortItems(false, "createdTime")}
-          >
-            Date Asc
-          </button>
-        ) : (
-          <button
-            className={styles.button}
-            onClick={() => handleSortItems(true, "createdTime")}
-          >
-            Date Desc
-          </button>
-        )}
+      <div className={styles.divb}>
+        <button
+          className={styles.button}
+          onClick={() =>
+            handleSortItems(!createdTimeSortAscending, "createdTime")
+          }
+        >
+          Date {createdTimeSortAscending ? "Asc" : "Desc"}
+        </button>
       </div>
-
       <div>
-        {titleSortAscending ? (
-          <button
-            className={styles.button}
-            onClick={() => handleSortItems(false, "title")}
-          >
-            Todo A to Z
-          </button>
-        ) : (
-          <button
-            className={styles.button}
-            onClick={() => handleSortItems(true, "title")}
-          >
-            Todo Z to A
-          </button>
-        )}
+        <button
+          className={styles.button}
+          onClick={() => handleSortItems(!titleSortAscending, "title")}
+        >
+          Todo {titleSortAscending ? "A to Z" : "Z to A"}
+        </button>
       </div>
 
       <ul>
@@ -98,6 +77,7 @@ function List({ todoList, onRemoveTodo }) {
     </>
   );
 }
+
 List.propTypes = {
   todoList: PropTypes.arrayOf(
     PropTypes.shape({
