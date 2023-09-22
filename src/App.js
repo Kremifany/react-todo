@@ -1,15 +1,15 @@
 import React from "react";
 import AddTodoForm from "./components/AddTodoForm";
-import TodoList from "./components/ToDoList";
-import Main from "./components/Main";
 import Nav from "./components/Nav";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import style from "./App.module.css";
+//import styles from "./App.module.css";
+import List from "./routes/List";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // const [sortBy, setSortBy] = useState('title');
 
   const postTodo = async (todo) => {
     try {
@@ -52,11 +52,12 @@ function App() {
   const addTodo = async (newTodo) => {
     const response = await postTodo(newTodo.title);
     if (!response) {
-      alert("error occured during adding new Item to Database");
+      alert("error occured during adding new Item");
       return;
     }
     newTodo.id = response.records[0].id;
     setTodoList([...todoList, newTodo]);
+    fetchData();
   };
 
   async function fetchData() {
@@ -68,7 +69,8 @@ function App() {
     };
 
     const url = `https://api.airtable.com/v0/${process.env.REACT_APP_AIRTABLE_BASE_ID}/${process.env.REACT_APP_TABLE_NAME}`;
-
+    //?view=Grid%20view&sort[0][field]=title&sort[0][direction]=desc//sorting with url implemented here
+    console.log(url);
     try {
       const response = await fetch(url, options);
       if (!response.ok) {
@@ -81,10 +83,13 @@ function App() {
         const newTodo = {
           id: todo.id,
           title: todo.fields.title,
+          createdTime: todo.createdTime,
         };
         return newTodo;
       });
+
       setTodoList(todos);
+      setIsLoading(false);
     } catch (error) {
       console.log(error.message);
     }
@@ -120,17 +125,19 @@ function App() {
     }
   }
 
+  console.log("before the routes");
   return (
     <>
       <h1>Todo App</h1>
+
       <BrowserRouter>
+        <Nav />
         <Routes>
-          <Route path="/" element={<Main />}></Route>
+          <Route path="/" element={<div></div>}></Route>
           <Route
             path="/add"
             element={
               <>
-                <Nav route={"/add"} />
                 <h2>Add New Todo</h2>
                 <AddTodoForm onAddTodo={addTodo} />
               </>
@@ -139,16 +146,11 @@ function App() {
           <Route
             path="/list"
             element={
-              <>
-                <Nav route={"/list"} />
-                <h2 className={style.header}>Todo List</h2>
-
-                {isLoading ? (
-                  <p>Loading ...</p>
-                ) : (
-                  <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
-                )}
-              </>
+              isLoading ? (
+                <p>Loading ...</p>
+              ) : (
+                <List todoList={todoList} onRemoveTodo={removeTodo}></List>
+              )
             }
           ></Route>
         </Routes>
