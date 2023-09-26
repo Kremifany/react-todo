@@ -56,6 +56,7 @@ function App() {
       return;
     }
     newTodo.id = response.records[0].id;
+    newTodo.createdTime = response.records[0].createdTime;
     setTodoList([...todoList, newTodo]);
     fetchData();
   };

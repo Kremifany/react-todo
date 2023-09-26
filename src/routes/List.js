@@ -30,6 +30,7 @@ function List({ todoList, onRemoveTodo }) {
 
   if (currentSortBy === "createdTime") {
     todoList.sort((a, b) => {
+      console.log(a.createdTime);
       if (createdTimeSortAscending)
         return a.createdTime <= b.createdTime ? 1 : -1;
       else return a.createdTime < b.createdTime ? -1 : 1;
