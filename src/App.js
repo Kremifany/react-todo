@@ -3,13 +3,11 @@ import AddTodoForm from "./components/AddTodoForm";
 import Nav from "./components/Nav";
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-//import styles from "./App.module.css";
 import List from "./routes/List";
 
 function App() {
   const [todoList, setTodoList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [sortBy, setSortBy] = useState('title');
 
   const postTodo = async (todo) => {
     try {
@@ -56,11 +54,13 @@ function App() {
       return;
     }
     newTodo.id = response.records[0].id;
+    newTodo.createdTime = response.records[0].createdTime;
     setTodoList([...todoList, newTodo]);
     fetchData();
   };
 
   async function fetchData() {
+
     const options = {
       method: "GET",
       headers: {
@@ -95,11 +95,27 @@ function App() {
     }
   }
 
+
   useEffect(() => {
+    async function rand () {
     setIsLoading(true);
-    fetchData();
+    setTimeout(()=>{})
+    await fetchData();
     setIsLoading(false);
+    }
+    rand();
   }, []);
+
+    // useEffect(() => {
+    //   async function rand() {
+    //     setIsLoading(true);
+    //     setTimeout(async () => {
+    //       await fetchData();
+    //       setIsLoading(false);
+    //     }, 1500);
+    //   }
+    //   rand();
+    // }, []); 
 
   async function removeTodo(id) {
     const options = {

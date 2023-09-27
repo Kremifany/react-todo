@@ -15,13 +15,7 @@ nav {
     padding: 0px;
     width: fit-content;
 }
-/* ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-        margin-block-start: 0em;
-            margin-block-end: 0em;
-} */
+
 li {
     display: inline-block;
     margin-right: 10px;
@@ -46,8 +40,6 @@ li.nav-item {
     border: 1px solid #ccc;
     border-radius: 0 0 5px 5px;
 }
-
-
 
 ul.links {
     list-style-type: none;
